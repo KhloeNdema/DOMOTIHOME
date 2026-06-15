@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOMOTIHOME – Maquette & Design System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg:#0B0F1A; --surface:#111827; --card:#161D2E; --border:#1E2A40;
+      --blue:#2D7DD2; --blue-lite:#5BA3F5; --green:#22C55E; --orange:#F59E0B;
+      --red:#EF4444; --text:#F1F5F9; --muted:#94A3B8;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);padding:40px 5%}
+    h1{font-size:2.2rem;font-weight:800;margin-bottom:8px}
+    .subtitle{color:var(--muted);margin-bottom:48px}
+
+    /* TABS */
+    .tabs{display:flex;gap:8px;margin-bottom:40px;flex-wrap:wrap}
+    .tab{padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface);
+      color:var(--muted);cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s}
+    .tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+    .panel{display:none}.panel.active{display:block}
+
+    /* DESIGN TOKENS */
+    .token-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:40px}
+    .token{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .token-swatch{height:80px}
+    .token-info{padding:12px;background:var(--card);font-size:.75rem}
+    .token-info b{display:block;margin-bottom:2px}
+    .token-info span{color:var(--muted)}
+
+    /* COMPONENTS */
+    .comp-title{font-size:1rem;font-weight:700;margin:32px 0 16px;color:var(--blue-lite)}
+    .comp-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:24px}
+    .btn{padding:10px 22px;border-radius:8px;border:none;font-family:inherit;
+      font-size:.875rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+    .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{filter:brightness(1.1)}
+    .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+    .btn-danger{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+    .btn-success{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+
+    /* CARDS */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;min-width:200px}
+    .card h3{font-size:.9rem;font-weight:700;margin-bottom:6px}
+    .card p{font-size:.8rem;color:var(--muted)}
+
+    /* BADGES */
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700}
+    .badge-on{background:rgba(34,197,94,.15);color:var(--green)}
+    .badge-off{background:rgba(148,163,184,.1);color:var(--muted)}
+    .badge-alert{background:rgba(239,68,68,.15);color:var(--red)}
+    .badge-warn{background:rgba(245,158,11,.15);color:var(--orange)}
+
+    /* TOGGLE */
+    .toggle-demo{display:flex;align-items:center;gap:12px;font-size:.85rem}
+    .tgl{width:44px;height:24px;border-radius:12px;background:var(--border);border:none;cursor:pointer;position:relative;transition:.2s}
+    .tgl.on{background:var(--blue)}
+    .tgl::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s}
+    .tgl.on::after{transform:translateX(20px)}
+
+    /* ICON SET */
+    .icon-grid{display:flex;flex-wrap:wrap;gap:12px}
+    .icon-item{background:var(--card);border:1px solid var(--border);border-radius:10px;
+      padding:14px 18px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:.65rem;color:var(--muted)}
+    .icon-item i{font-size:1.4rem}
+
+    /* SCREENS */
+    .screens-row{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+    .screen{background:var(--card);border:1px solid var(--border);border-radius:28px;
+      width:220px;min-width:220px;padding:20px 14px;
+      box-shadow:0 24px 60px rgba(0,0,0,.5)}
+    .screen-notch{width:50px;height:6px;background:var(--border);border-radius:3px;margin:0 auto 16px}
+    .screen-title{font-size:.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;text-align:center}
+    .s-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .s-header h4{font-size:.8rem;font-weight:700}
+    .s-header span{font-size:.65rem;color:var(--muted)}
+    .s-row{display:flex;gap:8px;margin-bottom:8px}
+    .s-tile{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;font-size:.6rem;color:var(--muted)}
+    .s-tile i{display:block;font-size:.9rem;margin-bottom:4px}
+    .s-notif{background:rgba(45,125,210,.12);border:1px solid rgba(45,125,210,.25);border-radius:8px;padding:8px;font-size:.6rem;color:var(--blue-lite);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+    .s-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:10px}
+    .s-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px}
+    .s-list-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:6px;display:flex;align-items:center;gap:8px;font-size:.62rem}
+    .s-list-item i{color:var(--blue-lite)}
+    .s-input{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;width:100%;margin-bottom:8px;font-size:.65rem;color:var(--muted)}
+    .s-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:8px;font-size:.65rem;font-weight:700;cursor:pointer;font-family:inherit}
+
+    /* DB */
+    .db-diagram{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+    .db-table{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .db-table-header{background:var(--blue-dark,#1A3A5C);padding:10px 14px;font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:8px}
+    .db-table-header i{color:var(--blue-lite)}
+    .db-col{padding:7px 14px;font-size:.7rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .db-col:last-child{border-bottom:none}
+    .db-col .col-name{color:var(--text)}
+    .db-col .col-type{color:var(--muted);font-size:.65rem}
+    .pk{color:var(--orange)!important;font-weight:700}
+    .fk{color:var(--blue-lite)!important}
+    .nn{font-size:.55rem;background:rgba(239,68,68,.15);color:var(--red);padding:1px 5px;border-radius:3px}
+
+    .section{margin-bottom:48px}
+    .section-title2{font-size:1.3rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+    .section-desc{color:var(--muted);font-size:.875rem;margin-bottom:24px}
+
+    @media(max-width:600px){.screens-row{flex-direction:column;align-items:center}}
+  </style>
+</head>
+<body>
+  <h1>🏠 DOMOTIHOME – Design System & Maquettes</h1>
+  <p class="subtitle">Phase 3 – Design UI ·</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="show('tokens')">🎨 Tokens visuels</button>
+    <button class="tab" onclick="show('components')">🧩 Composants</button>
+    <button class="tab" onclick="show('screens')">📱 Écrans</button>
+    <button class="tab" onclick="show('database')">🗄️ Base de données</button>
+  </div>
+
+  <!-- ── TOKENS ── -->
+  <div class="panel active" id="panel-tokens">
+    <div class="section">
+      <div class="section-title2">Palette de couleurs</div>
+      <div class="section-desc">Bleu foncé dominant, accents bleu clair, vert pour les états actifs, orange pour la température.</div>
+      <div class="token-grid">
+        <div class="token"><div class="token-swatch" style="background:#0B0F1A"></div><div class="token-info"><b>Fond principal</b><span>#0B0F1A</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#111827"></div><div class="token-info"><b>Surface</b><span>#111827</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#161D2E"></div><div class="token-info"><b>Carte</b><span>#161D2E</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#1E2A40"></div><div class="token-info"><b>Bordure</b><span>#1E2A40</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#2D7DD2"></div><div class="token-info"><b>Bleu principal</b><span>#2D7DD2</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#5BA3F5"></div><div class="token-info"><b>Bleu clair</b><span>#5BA3F5</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#22C55E"></div><div class="token-info"><b>Vert (actif)</b><span>#22C55E</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#F59E0B"></div><div class="token-info"><b>Orange (chaleur)</b><span>#F59E0B</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#EF4444"></div><div class="token-info"><b>Rouge (alerte)</b><span>#EF4444</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#F1F5F9"></div><div class="token-info"><b>Texte</b><span>#F1F5F9</span></div></div>
+        <div class="token"><div class="token-swatch" style="background:#94A3B8"></div><div class="token-info"><b>Texte secondaire</b><span>#94A3B8</span></div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title2">Typographie</div>
+      <div class="section-desc">Police : <b>Poppins</b> (Google Fonts). Hiérarchie claire en 4 niveaux.</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div><span style="font-size:2rem;font-weight:800">Titre H1 · 32px · 800</span></div>
+        <div><span style="font-size:1.4rem;font-weight:700">Titre H2 · 22px · 700</span></div>
+        <div><span style="font-size:1rem;font-weight:600">Titre H3 · 16px · 600</span></div>
+        <div><span style="font-size:.875rem;color:var(--muted)">Texte corps · 14px · 400 · Couleur muted</span></div>
+        <div><span style="font-size:.75rem;color:var(--blue-lite);font-weight:700;letter-spacing:.08em;text-transform:uppercase">Label tag · 12px · 700 · Uppercase</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title2">Espacements</div>
+      <div class="comp-row" style="align-items:flex-end;gap:0">
+        <div style="background:rgba(45,125,210,.2);width:8px;height:40px;border:1px solid var(--blue);margin-right:4px"></div>
+        <span style="font-size:.7rem;color:var(--muted);margin-right:24px">8px</span>
+        <div style="background:rgba(45,125,210,.2);width:16px;height:40px;border:1px solid var(--blue);margin-right:4px"></div>
+        <span style="font-size:.7rem;color:var(--muted);margin-right:24px">16px</span>
+        <div style="background:rgba(45,125,210,.2);width:32px;height:40px;border:1px solid var(--blue);margin-right:4px"></div>
+        <span style="font-size:.7rem;color:var(--muted)">32px</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:8px">Grille 12 colonnes · Marges 16px · Gaps 8 / 16 / 32px</p>
+    </div>
+  </div>
+
+  <!-- ── COMPONENTS ── -->
+  <div class="panel" id="panel-components">
+    <div class="comp-title">Boutons</div>
+    <div class="comp-row">
+      <button class="btn btn-primary"><i class="fas fa-rocket"></i> Principal</button>
+      <button class="btn btn-outline"><i class="fas fa-play"></i> Secondaire</button>
+      <button class="btn btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
+      <button class="btn btn-success"><i class="fas fa-check"></i> Confirmer</button>
+    </div>
+
+    <div class="comp-title">Badges d'état</div>
+    <div class="comp-row">
+      <span class="badge badge-on"><i class="fas fa-circle"></i> Allumé</span>
+      <span class="badge badge-off"><i class="fas fa-circle"></i> Éteint</span>
+      <span class="badge badge-alert"><i class="fas fa-triangle-exclamation"></i> Alerte</span>
+      <span class="badge badge-warn"><i class="fas fa-clock"></i> En attente</span>
+    </div>
+
+    <div class="comp-title">Interrupteurs (Toggle)</div>
+    <div class="comp-row">
+      <div class="toggle-demo">
+        <button class="tgl on" onclick="this.classList.toggle('on')"></button>
+        <span>Lumière salon</span>
+      </div>
+      <div class="toggle-demo">
+        <button class="tgl" onclick="this.classList.toggle('on')"></button>
+        <span>Climatisation</span>
+      </div>
+      <div class="toggle-demo">
+        <button class="tgl on" onclick="this.classList.toggle('on')"></button>
+        <span>Caméra</span>
+      </div>
+    </div>
+
+    <div class="comp-title">Cartes d'appareils</div>
+    <div class="comp-row">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <div style="width:38px;height:38px;border-radius:9px;background:rgba(45,125,210,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--blue-lite)"><i class="fas fa-lightbulb"></i></div>
+          <button class="tgl on" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <h3>Lumières</h3>
+        <p>Salon · ON · 75%</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <div style="width:38px;height:38px;border-radius:9px;background:rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--orange)"><i class="fas fa-temperature-half"></i></div>
+          <button class="tgl on" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <h3>Climatisation</h3>
+        <p>Chambre · 22°C</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <div style="width:38px;height:38px;border-radius:9px;background:rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--red)"><i class="fas fa-shield-halved"></i></div>
+          <button class="tgl" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <h3>Alarme</h3>
+        <p>Désactivée</p>
+      </div>
+    </div>
+
+    <div class="comp-title">Icônes du système</div>
+    <div class="icon-grid">
+      <div class="icon-item"><i class="fas fa-lightbulb" style="color:var(--orange)"></i>Lumière</div>
+      <div class="icon-item"><i class="fas fa-temperature-half" style="color:var(--orange)"></i>Clim</div>
+      <div class="icon-item"><i class="fas fa-video" style="color:var(--blue-lite)"></i>Caméra</div>
+      <div class="icon-item"><i class="fas fa-lock" style="color:var(--blue-lite)"></i>Serrure</div>
+      <div class="icon-item"><i class="fas fa-bell" style="color:var(--orange)"></i>Notif.</div>
+      <div class="icon-item"><i class="fas fa-bolt" style="color:var(--green)"></i>Énergie</div>
+      <div class="icon-item"><i class="fas fa-clock" style="color:var(--muted)"></i>Routine</div>
+      <div class="icon-item"><i class="fas fa-house" style="color:var(--blue-lite)"></i>Maison</div>
+      <div class="icon-item"><i class="fas fa-person-running" style="color:var(--red)"></i>Mouvement</div>
+      <div class="icon-item"><i class="fas fa-wifi" style="color:var(--green)"></i>Connexion</div>
+      <div class="icon-item"><i class="fas fa-gear" style="color:var(--muted)"></i>Paramètres</div>
+      <div class="icon-item"><i class="fas fa-user" style="color:var(--muted)"></i>Profil</div>
+    </div>
+  </div>
+
+  <!-- ── SCREENS ── -->
+  <div class="panel" id="panel-screens">
+    <div class="section-desc">Maquettes haute fidélité des 6 écrans principaux de l'application mobile.</div>
+    <div class="screens-row">
+
+      <!-- Screen 1: Login -->
+      <div class="screen">
+        <div class="screen-notch"></div>
+        <div class="screen-title">Connexion</div>
+        <div style="text-align:center;margin-bottom:16px">
+          <div style="width:48px;height:48px;background:var(--blue);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:1.2rem"><i class="fas fa-home"></i></div>
+          <div style="font-size:.75rem;font-weight:700">DOMOTIHOME</div>
+          <div style="font-size:.6rem;color:var(--muted)">Votre maison intelligente</div>
+        </div>
+        <input class="s-input" placeholder="Email" type="email" />
+        <input class="s-input" placeholder="Mot de passe" type="password" />
+        <button class="s-btn">Se connecter</button>
+        <div style="text-align:center;margin-top:10px;font-size:.6rem;color:var(--muted)">Pas de compte ? <span style="color:var(--blue-lite)">S'inscrire</span></div>
+      </div>
+
+      <!-- Screen 2: Dashboard -->
+      <div class="screen">
+        <div class="screen-notch"></div>
+        <div class="screen-title">Tableau de bord</div>
+        <div class="s-header">
+          <h4>Bonjour, Stevine 👋</h4>
+          <span><i class="fas fa-bell"></i></span>
+        </div>
+        <div class="s-row">
+          <div class="s-tile" style="color:var(--green)"><i class="fas fa-lightbulb"></i>Lumières<div style="font-size:.55rem;background:rgba(34,197,94,.15);color:var(--green);padding:1px 4px;border-radius:3px;margin-top:2px">3 ON</div></div>
+          <div class="s-tile"><i class="fas fa-temperature-half" style="color:var(--orange)"></i>Clim<div style="font-size:.55rem;color:var(--orange)">24°C</div></div>
+        </div>
+        <div class="s-row">
+          <div class="s-tile"><i class="fas fa-video" style="color:var(--blue-lite)"></i>Caméras<div style="font-size:.55rem;color:var(--blue-lite)">2 EN LIGNE</div></div>
+          <div class="s-tile"><i class="fas fa-shield-halved" style="color:var(--muted)"></i>Alarme<div style="font-size:.55rem;color:var(--muted)">OFF</div></div>
+        </div>
+        <div style="font-size:.65rem;color:var(--muted);margin:8px 0 4px;font-weight:600">Énergie aujourd'hui</div>
+        <div class="s-bar"><div class="s-bar-fill" style="width:42%"></div></div>
+        <div style="font-size:.6rem;color:var(--muted);text-align:right;margin-top:3px">4.2 kWh · –18%</div>
+        <div class="s-notif"><i class="fas fa-bell"></i> Mouvement détecté – Garage</div>
+      </div>
+
+      <!-- Screen 3: Rooms -->
+      <div class="screen">
+        <div class="screen-notch"></div>
+        <div class="screen-title">Mes pièces</div>
+        <div class="s-list-item"><i class="fas fa-couch"></i>Salon<span style="margin-left:auto;color:var(--green);font-size:.55rem">3 actifs</span></div>
+        <div class="s-list-item"><i class="fas fa-utensils"></i>Cuisine<span style="margin-left:auto;color:var(--green);font-size:.55rem">1 actif</span></div>
+        <div class="s-list-item"><i class="fas fa-bed"></i>Chambre<span style="margin-left:auto;color:var(--muted);font-size:.55rem">0 actif</span></div>
+        <div class="s-list-item"><i class="fas fa-bath"></i>Salle de bain<span style="margin-left:auto;color:var(--muted);font-size:.55rem">0 actif</span></div>
+        <div class="s-list-item"><i class="fas fa-car"></i>Garage<span style="margin-left:auto;color:var(--green);font-size:.55rem">1 actif</span></div>
+        <button class="s-btn" style="margin-top:10px;background:rgba(45,125,210,.2);color:var(--blue-lite)"><i class="fas fa-plus"></i> Ajouter une pièce</button>
+      </div>
+
+      <!-- Screen 4: Device control -->
+      <div class="screen">
+        <div class="screen-notch"></div>
+        <div class="screen-title">Contrôle appareil</div>
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="width:56px;height:56px;background:rgba(45,125,210,.2);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:1.4rem"><i class="fas fa-lightbulb" style="color:var(--blue-lite)"></i></div>
+          <div style="font-size:.8rem;font-weight:700">Lumière salon</div>
+          <div style="font-size:.6rem;color:var(--muted)">Philips Hue · WiFi</div>
+        </div>
+        <div style="display:flex;justify-content:center;margin-bottom:14px">
+          <button class="tgl on" onclick="this.classList.toggle('on')" style="width:52px;height:28px"></button>
+        </div>
+        <div style="font-size:.65rem;color:var(--muted);margin-bottom:6px;font-weight:600">Intensité</div>
+        <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:14px"><div style="width:75%;height:100%;background:var(--blue);border-radius:3px"></div></div>
+        <div style="font-size:.65rem;color:var(--muted);margin-bottom:6px;font-weight:600">Programmer</div>
+        <div class="s-notif" style="font-size:.6rem"><i class="fas fa-clock"></i> Éteindre à 22:00</div>
+        <button class="s-btn" style="margin-top:8px">Enregistrer</button>
+      </div>
+
+      <!-- Screen 5: Security -->
+      <div class="screen">
+        <div class="screen-notch"></div>
+        <div class="screen-title">Sécurité</div>
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="width:60px;height:60px;border-radius:50%;border:2px solid var(--muted);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:1.3rem"><i class="fas fa-lock-open" style="color:var(--muted)"></i></div>
+          <div style="font-size:.7rem;font-weight:700">Système désarmé</div>
+        </div>
+        <div class="cam-row" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;height:64px;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--muted);position:relative">
+            <span style="position:absolute;top:4px;right:5px;background:var(--red);color:#fff;font-size:.45rem;padding:1px 4px;border-radius:3px">LIVE</span>
+            <i class="fas fa-video" style="font-size:.9rem;color:var(--border)"></i>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;height:64px;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--muted);position:relative">
+            <span style="position:absolute;top:4px;right:5px;background:var(--red);color:#fff;font-size:.45rem;padding:1px 4px;border-radius:3px">LIVE</span>
+            <i class="fas fa-video" style="font-size:.9rem;color:var(--border)"></i>
+          </div>
+        </div>
+        <div class="s-notif" style="background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--green)"><i class="fas fa-check"></i> Aucune intrusion détectée</div>
+        <button class="s-btn" style="margin-top:8px">Armer le système</button>
+      </div>
+
+      <!-- Screen 6: Notifications -->
+      <div class="screen">
+        <div class="screen-notch"></div>
+        <div class="screen-title">Notifications</div>
+        <div class="s-list-item" style="border-left:2px solid var(--red);padding-left:8px">
+          <i class="fas fa-triangle-exclamation" style="color:var(--red)"></i>
+          <div>
+            <div style="font-weight:700">Mouvement détecté</div>
+            <div style="color:var(--muted);font-size:.55rem">Garage · 23h14</div>
+          </div>
+        </div>
+        <div class="s-list-item" style="border-left:2px solid var(--green);padding-left:8px">
+          <i class="fas fa-check-circle" style="color:var(--green)"></i>
+          <div>
+            <div style="font-weight:700">Routine activée</div>
+            <div style="color:var(--muted);font-size:.55rem">Mode nuit · 22h00</div>
+          </div>
+        </div>
+        <div class="s-list-item" style="border-left:2px solid var(--orange);padding-left:8px">
+          <i class="fas fa-bolt" style="color:var(--orange)"></i>
+          <div>
+            <div style="font-weight:700">Conso. élevée</div>
+            <div style="color:var(--muted);font-size:.55rem">Clim. chambre · 14h</div>
+          </div>
+        </div>
+        <div class="s-list-item" style="border-left:2px solid var(--blue-lite);padding-left:8px">
+          <i class="fas fa-info-circle" style="color:var(--blue-lite)"></i>
+          <div>
+            <div style="font-weight:700">Portail fermé</div>
+            <div style="color:var(--muted);font-size:.55rem">Garage · 08h45</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── DATABASE ── -->
+  <div class="panel" id="panel-database">
+    <div class="section-desc">Modèle Conceptuel de Données – 11 tables · Relations normalisées · MySQL</div>
+    <div class="db-diagram">
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-user"></i> utilisateurs</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name">nom</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">email</span><span class="col-type">UNIQUE</span></div>
+        <div class="db-col"><span class="col-name">mot_de_passe</span><span class="col-type">bcrypt</span></div>
+        <div class="db-col"><span class="col-name">role</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">statut</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">cree_le</span><span class="col-type">DATETIME</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-home"></i> maisons</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name">nom</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">adresse</span><span class="col-type">TEXT</span></div>
+        <div class="db-col"><span class="col-name">ville</span><span class="col-type">VARCHAR</span></div>
+        <div class="db-col"><span class="col-name">latitude</span><span class="col-type">DECIMAL</span></div>
+        <div class="db-col"><span class="col-name">longitude</span><span class="col-type">DECIMAL</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-door-open"></i> pieces</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name fk">maison_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">nom</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">icone</span><span class="col-type">VARCHAR</span></div>
+        <div class="db-col"><span class="col-name">etage</span><span class="col-type">TINYINT</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-plug"></i> appareils</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name fk">piece_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name fk">type_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">nom</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">statut</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">est_allume</span><span class="col-type">BOOL</span></div>
+        <div class="db-col"><span class="col-name">valeur_courante</span><span class="col-type">VARCHAR</span></div>
+        <div class="db-col"><span class="col-name">protocole</span><span class="col-type">ENUM</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-terminal"></i> commandes</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name fk">utilisateur_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name fk">appareil_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">action</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">source</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">statut</span><span class="col-type">ENUM</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-clock"></i> routines</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name fk">maison_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name fk">createur_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">nom</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">declencheur</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">heure_trigger</span><span class="col-type">TIME</span></div>
+        <div class="db-col"><span class="col-name">jours</span><span class="col-type">SET</span></div>
+        <div class="db-col"><span class="col-name">est_active</span><span class="col-type">BOOL</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-bell"></i> notifications</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name fk">utilisateur_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">titre</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">message</span><span class="col-type">TEXT</span></div>
+        <div class="db-col"><span class="col-name">type</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">lue</span><span class="col-type">BOOL</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-bolt"></i> consommation_energie</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name fk">appareil_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">kwh</span><span class="col-type">DECIMAL</span></div>
+        <div class="db-col"><span class="col-name">cout_fcfa</span><span class="col-type">DECIMAL</span></div>
+        <div class="db-col"><span class="col-name">periode_debut</span><span class="col-type">DATETIME</span></div>
+        <div class="db-col"><span class="col-name">periode_fin</span><span class="col-type">DATETIME</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-thermometer"></i> capteurs</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">INT PK</span></div>
+        <div class="db-col"><span class="col-name fk">piece_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">type</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">unite</span><span class="col-type">VARCHAR</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-chart-line"></i> mesures_capteurs</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">BIGINT PK</span></div>
+        <div class="db-col"><span class="col-name fk">capteur_id</span><span class="col-type">FK</span></div>
+        <div class="db-col"><span class="col-name">valeur</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">enregistree</span><span class="col-type">DATETIME</span></div>
+      </div>
+
+      <div class="db-table">
+        <div class="db-table-header"><i class="fas fa-history"></i> historique</div>
+        <div class="db-col"><span class="col-name pk">id</span><span class="col-type">BIGINT PK</span></div>
+        <div class="db-col"><span class="col-name fk">utilisateur_id</span><span class="col-type">FK null</span></div>
+        <div class="db-col"><span class="col-name fk">appareil_id</span><span class="col-type">FK null</span></div>
+        <div class="db-col"><span class="col-name">type_evenement</span><span class="col-type">ENUM</span></div>
+        <div class="db-col"><span class="col-name">description</span><span class="col-type nn">NN</span></div>
+        <div class="db-col"><span class="col-name">cree_le</span><span class="col-type">DATETIME</span></div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:32px;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:14px">
+      <div style="font-size:.875rem;font-weight:700;margin-bottom:12px">📌 Relations principales</div>
+      <div style="font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:8px;line-height:1.6">
+        <span>🔷 <b style="color:var(--text)">utilisateurs</b> ↔ <b style="color:var(--text)">maisons</b> — relation N:N via <code style="color:var(--blue-lite)">maison_utilisateurs</code></span>
+        <span>🔷 <b style="color:var(--text)">maisons</b> → <b style="color:var(--text)">pieces</b> — 1:N (une maison contient plusieurs pièces)</span>
+        <span>🔷 <b style="color:var(--text)">pieces</b> → <b style="color:var(--text)">appareils</b> — 1:N (une pièce contient plusieurs appareils)</span>
+        <span>🔷 <b style="color:var(--text)">utilisateurs</b> → <b style="color:var(--text)">commandes</b> — 1:N (un utilisateur envoie plusieurs commandes)</span>
+        <span>🔷 <b style="color:var(--text)">appareils</b> → <b style="color:var(--text)">commandes</b> — 1:N (un appareil reçoit plusieurs commandes)</span>
+        <span>🔷 <b style="color:var(--text)">routines</b> → <b style="color:var(--text)">routine_actions</b> — 1:N (une routine a plusieurs actions)</span>
+        <span>🔷 <b style="color:var(--text)">capteurs</b> → <b style="color:var(--text)">mesures_capteurs</b> — 1:N (séries temporelles IoT)</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
